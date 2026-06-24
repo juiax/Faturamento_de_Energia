@@ -1,13 +1,13 @@
 from http import HTTPStatus
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Query, Session
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 from app.database import get_session
 from app.models import Titular
-from app.schemas import Message, TitularList, TitularPublic, TitularSchema
+from app.schemas import TitularList, TitularPublic, TitularSchema
 
 router = APIRouter(prefix='/titulares', tags=['titulares'])
 
@@ -35,7 +35,7 @@ def create_titular(
             status_code=HTTPStatus.CONFLICT,
             detail='CPF já cadastrado',
         )
-    
+
 
 @router.get(
     '/',
@@ -48,12 +48,10 @@ def read_titulares(
 ):
     total = session.scalar(select(func.count(Titular.id)))
     titulares = session.scalars(
-        select(Titular)
-        .offset((page - 1) * per_page)
-        .limit(per_page)
+        select(Titular).offset((page - 1) * per_page).limit(per_page)
     ).all()
 
-    return{
+    return {
         'page': page,
         'per_page': per_page,
         'total': total,
@@ -62,9 +60,9 @@ def read_titulares(
 
 
 @router.get(
-        '/{titular_id}',
-        response_model=TitularPublic,
-    )
+    '/{titular_id}',
+    response_model=TitularPublic,
+)
 def read_titular(
     titular_id: int,
     session: Session = Depends(get_session),
@@ -96,7 +94,7 @@ def update_titular(
             status_code=HTTPStatus.NOT_FOUND,
             detail='Titular não encontrado',
         )
-    
+
     try:
         db_titular.nome = titular.nome
         db_titular.cpf = titular.cpf
@@ -111,7 +109,7 @@ def update_titular(
             status_code=HTTPStatus.CONFLICT,
             detail='CPF já cadastrado',
         )
-    
+
 
 @router.delete(
     '/{titular_id}',
