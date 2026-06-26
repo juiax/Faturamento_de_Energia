@@ -30,9 +30,9 @@ class Titular(Base):
 class Concessionaria(Base):
     __tablename__ = 'concessionarias'
 
-    id = mapped_column(Integer, primary_key=True)
-    nome = mapped_column(String(100), nullable=False, unique=True)
-    preco_por_kwh = mapped_column(Numeric(14, 5), nullable=False)
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False, unique=True)
+    preco_por_kwh = Column(Numeric(14, 5), nullable=False)
 
     unidades_consumidoras = relationship(
         'UnidadeConsumidora',

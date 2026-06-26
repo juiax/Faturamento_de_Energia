@@ -7,7 +7,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.database import get_session
-from app.models import Fatura, UnidadeConsumidora
+from app.models import Concessionaria, Fatura, UnidadeConsumidora
 from app.schemas import FaturaList, FaturaPublic, FaturaSchema
 
 router = APIRouter(prefix='/faturas', tags=['faturas'])
@@ -64,7 +64,15 @@ def create_fatura(
             detail='Já existe fatura para esta unidade neste mês',
         )
 
-    preco = unidade.concessionaria.preco_por_kwh
+    concessionaria = session.get(Concessionaria, unidade.concessionaria_id)
+
+    if not concessionaria:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail='Concessionária não encontrada',
+        )
+
+    preco = concessionaria.preco_por_kwh
     valor_total = calcular_valor_total(fatura.consumo_total_kwh, preco)
 
     db_fatura = Fatura(
