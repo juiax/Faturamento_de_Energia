@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.database import get_session
-from app.models import Concessionaria
+from app.models import Concessionaria, UnidadeConsumidora
 from app.schemas import (
     ConcessionariaList,
     ConcessionariaPublic,
@@ -132,10 +132,19 @@ def delete_concessionaria(
             detail='Concessionária não encontrada',
         )
 
-    if not db_concessionaria.unidades_consumidoras:
+    unidade_vinculada = session.scalar(
+        select(UnidadeConsumidora).where(
+            UnidadeConsumidora.concessionaria_id == concessionaria_id
+        )
+    )
+
+    if unidade_vinculada:
         raise HTTPException(
             status_code=HTTPStatus.CONFLICT,
-            detail='Concessionária possui unidades consumidoras associadas',
+            detail=(
+                'Não é possível deletar a concessionária, pois existem '
+                'unidades consumidoras associadas a ela'
+            ),
         )
 
     session.delete(db_concessionaria)

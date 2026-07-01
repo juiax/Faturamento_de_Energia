@@ -174,7 +174,7 @@ def delete_unidade(
     if db_unidade.faturas:
         raise HTTPException(
             status_code=HTTPStatus.CONFLICT,
-            detail='Não é possível deletar a unidade,'
+            detail='Não é possível deletar a unidade, '
             'pois existem faturas associadas a ela',
         )
 
@@ -220,3 +220,5 @@ def read_historico_faturas(
         'total': total,
         'items': faturas,
     }
+
+

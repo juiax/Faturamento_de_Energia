@@ -32,6 +32,20 @@ quote-style = "single"
 [tool.taskipy.tasks]
 format = "ruff format ."
 lint = "ruff check . --fix"
-pre_test = "task lint"
-test = "pytest -s -x"
-run = "uvicorn app.main:app --reload"
+check = "ruff check ."
+
+test = "pytest"
+
+coverage = "pytest --cov=app --cov-report=term-missing"
+
+cov-html = "pytest --cov=app --cov-report=html"
+
+run = "fastapi dev app/main.py"
+
+[tool.pytest.ini_options]
+addopts = "--cov=app --cov-report=term-missing"
+
+[tool.coverage.run]
+omit = [
+    "app/database.py",
+]

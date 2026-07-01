@@ -25,6 +25,7 @@ def session():
         yield session
 
     Base.metadata.drop_all(engine)
+    engine.dispose()
 
 
 @pytest.fixture

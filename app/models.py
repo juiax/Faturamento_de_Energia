@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlalchemy import (
     Column,
@@ -9,7 +9,7 @@ from sqlalchemy import (
     Numeric,
     String,
 )
-from sqlalchemy.orm import declarative_base, mapped_column, relationship
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
@@ -90,11 +90,7 @@ class Fatura(Base):
     preco_por_kwh_aplicado = Column(Numeric(14, 5), nullable=False)
     valor_total = Column(Numeric(14, 2), nullable=False)
 
-    created_at = Column(
-        DateTime,
-        default=datetime.utcnow,
-        nullable=False,
-    )
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
     unidade_consumidora = relationship(
         'UnidadeConsumidora',
