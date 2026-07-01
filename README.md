@@ -26,7 +26,7 @@ O projeto foi desenvolvido com foco em boas práticas de arquitetura, organizaç
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/SEU_USUARIO/Faturamento_de_Energia.git
+git clone https://github.com/juiax/Faturamento_de_Energia.git
 ```
 
 ```bash
