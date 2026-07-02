@@ -52,7 +52,7 @@ http://localhost:8000
 Execute:
 
 ```bash
-docker compose run --rm api pytest
+docker compose run --rm api uv run pytest
 ```
 
 ---
@@ -82,14 +82,6 @@ Após iniciar a aplicação:
 ```
 http://localhost:8000/docs
 ```
-
-Também é possível acessar o schema OpenAPI em:
-
-```
-http://localhost:8000/openapi.json
-```
-
----
 
 # Decisões técnicas
 
