@@ -62,13 +62,13 @@ docker compose run --rm api uv run pytest
 Verificar problemas de lint:
 
 ```bash
-ruff check .
+uv run ruff check .
 ```
 
 Formatar automaticamente:
 
 ```bash
-ruff format .
+uv run ruff format .
 ```
 
 ---
